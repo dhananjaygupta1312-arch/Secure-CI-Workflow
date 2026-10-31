@@ -21,3 +21,45 @@ jobs:
         with:
           name: test-results
           path: test-results.xml
+          
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: SAST - Semgrep
+        run: |
+          pip install semgrep
+          semgrep scan --config auto --json -o semgrep.json || true
+          semgrep scan --config auto || true
+
+      - name: SCA - pip-audit
+        run: |
+          pip install pip-audit
+          pip-audit -r app/requirements.txt -f json -o pip-audit.json || true
+          pip-audit -r app/requirements.txt || true
+
+      - name: Secrets - Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: SBOM - CycloneDX
+        run: |
+          pip install cyclonedx-bom
+          cyclonedx-py requirements app/requirements.txt -o sbom.json
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-reports
+          path: |
+            semgrep.json
+            pip-audit.json
+            sbom.json
