@@ -290,15 +290,6 @@ nothing added to commit but untracked files present
 
 ---
 
-## Entry template for future sessions
-
-```
-## Entry N: Title
-**Date:**
-**Goal:**
-**What I did:**
-**Error (exact message):**
-**Cause:**
 **Fix:**
 **What I learned (in my own words):**
 **Open questions:**
