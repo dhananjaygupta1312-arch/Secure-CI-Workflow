@@ -289,9 +289,3 @@ nothing added to commit but untracked files present
 **What I would add next:** Dependabot, Trivy container scanning, OWASP ZAP (DAST), branch protection requiring passing checks, pinning Actions to commit SHAs, and a custom Gitleaks rule for generic passwords.
 
 ---
-
-**Fix:**
-**What I learned (in my own words):**
-**Open questions:**
-**Next step:**
-```
